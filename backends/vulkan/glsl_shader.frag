@@ -11,5 +11,10 @@ layout(location = 0) in struct {
 
 void main()
 {
-    fColor = In.Color * texture(sampler2D(_Texture, _Sampler), In.UV.st);
+    vec4 texColor = texture(sampler2D(_Texture, _Sampler), In.UV.st);
+
+    // Convert ImGui vertex color from sRGB → linear
+    vec3 linearVertex = pow(In.Color.rgb, vec3(2.2));
+
+    fColor = vec4(linearVertex, In.Color.a) * texColor;
 }
